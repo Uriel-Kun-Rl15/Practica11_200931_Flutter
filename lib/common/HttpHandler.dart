@@ -15,7 +15,7 @@ class HttpHandler {
   final String _language =
       "es-MX"; // Define el lenguaje deseado para las respuestas.
 
-  static HttpHandler get(){
+  static HttpHandler get() {
     return _httHandler;
   }
 
@@ -27,30 +27,30 @@ class HttpHandler {
   }
 
   // Define una función para recuperar una lista de películas.
-  Future<List<Media>> fetchMovies() {
+  Future<List<Media>> fetchMovies({String category = "populares"}) async {
     var uri = new Uri.https(
         _baseUrl,
-        "3/movie/popular", // Crea una URI para obtener películas populares.
+        "3/movie/$category", // Crea una URI para obtener películas populares.
         {
           'api_key': API_KEY,
           'page': "1",
-          'languaje': _language
+          'language': _language
         }); // Parámetros de la solicitud.
     // Llama a la función getJson para obtener datos y mapearlos en objetos de tipo Media.
-    return getJson(uri).then(((data) =>
-        data['results'].map<Media>((item) => new Media(item, MediaType.movie)).toList()));
+    return getJson(uri).then(((data) => data['results']
+        .map<Media>((item) => new Media(item, MediaType.movie))
+        .toList()));
   }
-  Future<List<Media>> fetchShow() {
-    var uri = new Uri.https(
-        _baseUrl,
-        "3/tv/popular", 
-        {
-          'api_key': API_KEY,
-          'page': "1",
-          'languaje': _language
-        }); // Parámetros de la solicitud.
+
+  Future<List<Media>> fetchShow({String category = "populares"}) async {
+    var uri = new Uri.https(_baseUrl, "3/tv/$category", {
+      'api_key': API_KEY,
+      'page': "1",
+      'language': _language
+    }); // Parámetros de la solicitud.
     // Llama a la función getJson para obtener datos y mapearlos en objetos de tipo Media.
-    return getJson(uri).then(((data) =>
-        data['results'].map<Media>((item) => new Media(item, MediaType.show)).toList()));
+    return getJson(uri).then(((data) => data['results']
+        .map<Media>((item) => new Media(item, MediaType.show))
+        .toList()));
   }
 }

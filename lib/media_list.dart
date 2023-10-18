@@ -12,7 +12,8 @@ import 'package:movieapp_20091/common/MediaProvider.dart';
 
 class MediaList extends StatefulWidget {
   final MediaProvider provider;
-  MediaList(this.provider);
+  String category;
+  MediaList(this.provider, this.category);
   @override
   _MediaListState createState() =>
       new _MediaListState(); // Define una clase que extiende StatefulWidget y proporciona un método para crear su estado interno.
@@ -25,9 +26,10 @@ class _MediaListState extends State<MediaList> {
     super.initState();
     loadMedia();
   }
+
   @override
-  void didUpdateWidget(MediaList oldWidget){
-    if(oldWidget.provider.runtimeType != widget.provider.runtimeType){
+  void didUpdateWidget(MediaList oldWidget) {
+    if (oldWidget.provider.runtimeType != widget.provider.runtimeType) {
       _media = [];
       loadMedia();
     }
@@ -35,7 +37,7 @@ class _MediaListState extends State<MediaList> {
   }
 
   void loadMedia() async {
-    var media =await widget.provider.fetchMedia();
+    var media = await widget.provider.fetchMedia(widget.category);
     setState(() {
       _media.addAll(media);
     });

@@ -2,6 +2,8 @@
 // Asignatura: Desarrollo Movil Integral
 //Grado: 10   Grupo: "A"
 // Docente: MTI. Marco Antonio Ramirez Hernandez
+import 'dart:ffi';
+
 import 'package:flutter/material.dart'; // Importa la biblioteca Flutter para construir interfaces de usuario.
 import 'package:movieapp_20091/common/HttpHandler.dart'; // Importa la clase HttpHandler desde un archivo llamado HttpHandler.dart.
 import 'package:movieapp_20091/media_list.dart';
@@ -19,8 +21,22 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // Define una clase que extiende State y representa el estado interno de Home.
 
+  @override
+  void initState() {
+    _pageController = new PageController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+    super.dispose();
+  }
+
   final MediaProvider movieProvider = new MediaPrvider();
   final MediaProvider showProvider = new ShowProvider();
+  PageController? _pageController;
+  int _page = 0;
 
   MediaType mediaType = MediaType.movie;
   // Estilo de fuente personalizado
@@ -132,10 +148,20 @@ class _HomeState extends State<Home> {
           ),
         ]),
       ),
-      body: PageView(children: _getMediaList()),
+      body: PageView(
+        children: _getMediaList(),
+        controller: _pageController,
+        onPageChanged: (int index) {
+          setState(() {
+            _page = index;
+          });
+        },
+      ),
       bottomNavigationBar: new BottomNavigationBar(
         // Barra de navegación inferior (BottomNavigationBar) con iconos y etiquetas
         items: _obtenerIconos(),
+        onTap: _navigationTapped,
+        currentIndex: _page,
       ),
     );
   }
@@ -168,7 +194,20 @@ class _HomeState extends State<Home> {
 
   List<Widget> _getMediaList() {
     return (mediaType == MediaType.movie)
-        ? <Widget>[new MediaList(movieProvider)]
-        : <Widget>[new MediaList(showProvider)];
+        ? <Widget>[
+            new MediaList(movieProvider, "popular"),
+            new MediaList(movieProvider, "upcoming"),
+            new MediaList(movieProvider, "top_rated")
+          ]
+        : <Widget>[
+            new MediaList(showProvider, "popular"),
+            new MediaList(showProvider, "on_the_air"),
+            new MediaList(showProvider, "top_rated")
+          ];
+  }
+
+  void _navigationTapped(int page) {
+    _pageController?.animateToPage(page,
+        duration: const Duration(milliseconds: 2), curve: Curves.ease);
   }
 }
