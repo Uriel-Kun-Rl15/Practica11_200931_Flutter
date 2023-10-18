@@ -225,6 +225,6 @@ class _HomeState extends State<Home> {
 
   void _navigationTapped(int page) {
     _pageController?.animateToPage(page,
-        duration: const Duration(milliseconds: 2), curve: Curves.ease);
+        duration: const Duration(milliseconds: 10), curve: Curves.ease);
   }
 }
