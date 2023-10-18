@@ -168,20 +168,37 @@ class _HomeState extends State<Home> {
 
   // Método para obtener los elementos de la barra de navegación inferior
   List<BottomNavigationBarItem> _obtenerIconos() {
-    return [
-      new BottomNavigationBarItem(
-        icon: new Icon(Icons.thumb_up), // Icono de pulgar hacia arriba
-        label: ("populares"), // Etiqueta para la opción "populares"
-      ),
-      new BottomNavigationBarItem(
-        icon: new Icon(Icons.update), // Icono de actualización
-        label: ("Proximamente"), // Etiqueta para la opción "Proximamente"
-      ),
-      new BottomNavigationBarItem(
-        icon: new Icon(Icons.star), // Icono de estrella
-        label: ("Mejor valorados"), // Etiqueta para la opción "Mejor valorados"
-      ),
-    ];
+    return mediaType == MediaType.movie
+        ? [
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.thumb_up), // Icono de pulgar hacia arriba
+              label: ("populares"), // Etiqueta para la opción "populares"
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.update), // Icono de actualización
+              label: ("Proximamente"), // Etiqueta para la opción "Proximamente"
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.star), // Icono de estrella
+              label:
+                  ("Mejor valoradas"), // Etiqueta para la opción "Mejor valorados"
+            ),
+          ]
+        : [
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.thumb_up), // Icono de pulgar hacia arriba
+              label: ("populares"), // Etiqueta para la opción "populares"
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.update), // Icono de actualización
+              label: ("Aire"), // Etiqueta para la opción "Proximamente"
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.star), // Icono de estrella
+              label:
+                  ("Mejor valoradas"), // Etiqueta para la opción "Mejor valorados"
+            )
+          ];
   }
 
   void _changeMediaType(MediaType type) {
